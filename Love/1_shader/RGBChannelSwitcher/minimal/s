@@ -1,0 +1,2 @@
+uniform float m[4];
+vec4 effect(vec4 co,Image t,vec2 c,vec2 s){vec4 p=Texel(t,c);p.r = p.r * m[0];p.b = p.b * m[1]; p.g = p.g * m[2]; return p;}
