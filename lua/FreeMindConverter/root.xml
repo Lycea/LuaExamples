@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><map version="0.8.1"><node CREATED="1523959579776" ID="50v61filbvscmfqdq37t71jacf" MODIFIED="1523959579776" TEXT="root"><node BACKGROUND_COLOR="#C3D69B" CREATED="1523959579776" ID="08i7rf30vjne9ibr8dphauidbk" MODIFIED="1523959579776" POSITION="right" TEXT="idle"><edge/><arrowlink DESTINATION="0j3dioi9970rvdluh2661h4lc3" ENDARROW="Default" ID="6ok6scmup5sjv8n04aj6ubvq0i" STARTARROW="Default"/><node BACKGROUND_COLOR="#C3D69B" CREATED="1523959579777" ID="5ro762124pa6relj5pvqdn0rnv" MODIFIED="1523959579777" TEXT="-selector-"><edge/><node CREATED="1523959579777" ID="6sk2kl35hbu7qdisei3a1e9llo" MODIFIED="1523959579777" TEXT="walk_around"><node BACKGROUND_COLOR="#4BACC6" CREATED="1523959579777" ID="1i1t2637c1d496tkr8tj1j88o9" MODIFIED="1523959579777" TEXT="-sequence-"><node CREATED="1523959579777" ID="30kfhh55hg200rbl9t3orpecbd" MODIFIED="1523959579777" TEXT="find_mpoint"/><node CREATED="1523959579777" ID="1jjv6r86mhh8pltkl50jobtnb9" MODIFIED="1523959579777" TEXT="move_to_point"/><node CREATED="1523959579777" ID="746b356hfuk1kfkvrc5nfnqqml" MODIFIED="1523959579777" TEXT="wait_a_bit"/></node></node><node CREATED="1523959579777" ID="418st1tu9e8g43td1ms9grqdqs" MODIFIED="1523959579777" TEXT="sleep"><node BACKGROUND_COLOR="#4BACC6" CREATED="1523959579777" ID="2musijbke51ea1dpp38s7ek12p" MODIFIED="1523959579777" TEXT="-sequence-"><node CREATED="1523959579777" ID="6m58dafnmkv1gcg8m8oslp4gk2" MODIFIED="1523959579777" TEXT="go_into_sleep_mode"/><node CREATED="1523959579777" ID="2i7tq9pmbj4o6jdej46uoi0s62" MODIFIED="1523959579777" TEXT="wait_a_bit"/></node></node><node CREATED="1523959579777" ID="5v3v645m961glat1tkk6k9bgfp" MODIFIED="1523959579777" TEXT="go_to_next_room"><node BACKGROUND_COLOR="#4BACC6" CREATED="1523959579777" ID="6rgqfo9ng963c5u762cc2bjjv5" MODIFIED="1523959579777" TEXT="-sequence-"><node CREATED="1523959579777" ID="6et2h5i7heq7hfg5umei21n6l3" MODIFIED="1523959579777" TEXT="find_room_to_go"/><node CREATED="1523959579777" ID="7l3s8n5t641gl4t6tdcadlvqjj" MODIFIED="1523959579777" TEXT="plan_way"/><node CREATED="1523959579777" ID="2hm058nfbncr74elom6emjt2u4" MODIFIED="1523959579777" TEXT="move_to_room"><node CREATED="1523959579777" ID="4pkrib3tokfbngkgsppsuu6l4h" MODIFIED="1523959579777" TEXT="move_to_subpoint"/></node><node CREATED="1523959579777" ID="6od0gfk91jnugfkfj9kpcjjhie" MODIFIED="1523959579777" TEXT="wait_a_bit"/></node></node></node></node><node BACKGROUND_COLOR="#FAC090" CREATED="1523959579777" FOLDER="true" ID="0j3dioi9970rvdluh2661h4lc3" MODIFIED="1523959579777" POSITION="right" TEXT="following"><edge/><hook NAME="accessories/plugins/NodeNote.properties"><text>Always call this check to change dynamically to here
+</text></hook><node BACKGROUND_COLOR="#4BACC6" CREATED="1523959579777" ID="189n8tmq9grdvad7avjeuofoh3" MODIFIED="1523959579777" TEXT="-sequence-"><edge/><node CREATED="1523959579777" ID="24ep6mfo59730hnbrohq6g0ab7" MODIFIED="1523959579777" TEXT="is_player_near"/><node CREATED="1523959579777" ID="4grh9tb7j0paor4gnsvmu6b0l7" MODIFIED="1523959579777" TEXT="follow_player"><node CREATED="1523959579777" ID="0sje6109vicdh2bi47aa5l1ivi" MODIFIED="1523959579777" TEXT="move_to_point"/></node></node></node><node BACKGROUND_COLOR="#E67676" CREATED="1523959579777" ID="1mmkrqtp43jfv4mg9gh8h0ndp0" MODIFIED="1523959579777" POSITION="right" TEXT="attack_mode"><edge/><hook NAME="accessories/plugins/NodeNote.properties"><text>Call this always when in following mode
+</text></hook><node BACKGROUND_COLOR="#4BACC6" CREATED="1523959579777" ID="26pts9rs1tgp3pv238m3pai0fv" MODIFIED="1523959579777" TEXT="-sequence-"><edge/><node CREATED="1523959579777" ID="04hjfdl852nueu0fuopk1fnlq0" MODIFIED="1523959579777" TEXT="is_player_near"/><node CREATED="1523959579777" ID="40u7u45s78gfno5ttmpmpmfljj" MODIFIED="1523959579777" TEXT="is_near_range"><node CREATED="1523959579777" ID="68dmsbn25bqemep75icr9dp4dk" MODIFIED="1523959579777" TEXT="near_attack"/></node><node CREATED="1523959579777" ID="2uip7u3ihhvv70pg2smg57gj5f" MODIFIED="1523959579777" TEXT="is_far_range"><node CREATED="1523959579777" ID="4isln8tp18616ihhgvl826m2e2" MODIFIED="1523959579777" TEXT="range_attack"/></node></node></node><node CREATED="1523959579777" ID="38q6uu5632kvloge5uqj7k28gd" MODIFIED="1523959579777" POSITION="left" TEXT="implementation ?"><edge/><node CREATED="1523959579777" ID="41vv3vdlq17on8rh3v8burkrla" MODIFIED="1523959579777" TEXT=""><hook NAME="accessories/plugins/NodeNote.properties"><text>root = {idle,following,attacking,(fleeing)}
+
+function find_point
+
+function move_to_point
+
+function wait_a_bit
+
+function go_into_sleep_mode
+
+function find_room_to_go
+
+function plan_way
+
+function move_to_room
+
+function is_player_near
+
+function follow_player
+
+function is_near_range
+
+function near_attack
+
+function is_far_range
+
+</text></hook></node><node CREATED="1523959579778" ID="6ma66dq46sle4ea37upnaj5h6s" MODIFIED="1523959579778" TEXT="Subtopic 2"><hook NAME="accessories/plugins/NodeNote.properties"><text>state = idle
+
+function state_machine
+	state()
+end
+
+
+idle_sub_state = nil
+
+idle_functs={walk,sleep,move_room}
+
+
+function idle
+   if following then
+		state = following
+   else
+		idle_sub_state =idle_functs[math.rand(1,3)]
+	end
+
+end
+
+
+function following
+	if attacking then
+		state = attacking
+		return false
+	end
+
+	if is_player_near then
+		follow_player()
+	else
+		state = idle
+		return false
+	end
+end
+
+function attacking
+
+function fleeing</text></hook></node></node></node></map>
