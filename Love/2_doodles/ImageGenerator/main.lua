@@ -30,7 +30,7 @@ function love.load()
 
   --debugstuff
     for i ,argu in ipairs(arg) do
-      print (argu)
+      --print (argu)
       if argu == "-debug" then
         require("mobdebug").start()   
       end
@@ -38,21 +38,24 @@ function love.load()
   
   ui.init()
   
+
+  
+  
   
   --load all the modules
   recursiveEnumerate("mods", "")
   
   for _,mod in pairs(mod_dir) do
-    print(mod)
+    --print(mod)
     mod =string.gsub(mod,"/","."):gsub(".lua","")
-    print(mod)
+    --print(mod)
     mods[#mods+1] = require(mod)
     mods[#mods].ini()
   end
   
   
-  
-  sel_menue =
+  --start up the default menue
+    sel_menue =
   {
     ui.AddSlider(1,0,0,100,30,1,#mods)
   }
@@ -63,7 +66,9 @@ end
 
 function love.update(dt)
   if actual_mod ~= sli_sel.value then
+    mods[actual_mod].unload()
     actual_mod = sli_sel.value
+    mods[actual_mod].reload()
   end
   
   mods[actual_mod].update(dt)
@@ -79,15 +84,15 @@ local function draw_panel()
   love.graphics.line(200,0,200,150)
 end
 
-
-
 function love.draw()
   mods[actual_mod].draw()
   
 
   draw_panel()
   ui.draw()
-  
-  mods[actual_mod].drawUi()
 end
+
+
+
+
 

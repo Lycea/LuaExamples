@@ -34,7 +34,7 @@ end
 time = 0
 function mod.update(dt)
   time = time+dt*10
-  print(time.." "..dt)
+  --print(time.." "..dt)
 end
 
   
@@ -42,7 +42,7 @@ end
 function mod.draw()
   --make the randomness happen!!
   love.graphics.setCanvas(canv)
-    print(20/time)
+    --print(20/time)
     for i=1, 20/time do
       love.graphics.setColor(rnd(255),rnd(255),rnd(255),rnd(255))
       drawing[1]()
@@ -53,12 +53,12 @@ function mod.draw()
   --post effects!!
   local pic = canv:newImageData()
   local points ={}
-  for i =0, 3000 do
+  for i =0, 2000 do
     local x,y = rnd(scr_w-3),rnd(scr_h-3)
     local r,g,b,a = pic:getPixel(x,y)
     
     
-    points[#points+1]={x,y,r-20,g-20,b-20,a}
+    points[#points+1]={x,y,r-5,g-5,b-5,a}
   end
   love.graphics.setPointSize(15)
   love.graphics.setCanvas(canv)
@@ -68,6 +68,17 @@ function mod.draw()
   love.graphics.setColor(0xff,0xff,0xff,0xff)
   love.graphics.draw(canv)
 end
+
+
+function mod.reload()
+  
+end
+
+
+function mod.unload()
+  love.graphics.setPointSize(1)
+end
+
 
 
 return mod
