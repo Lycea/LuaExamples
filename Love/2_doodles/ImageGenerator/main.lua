@@ -4,7 +4,7 @@ ui = require("SimpleUI.SimpleUI")
 local mod_dir = {}
 local mods = {}
 
-local actual_mod = 1
+local actual_mod = 2
 
 
 local sel_menue = {}
@@ -57,7 +57,7 @@ function love.load()
   --start up the default menue
     sel_menue =
   {
-    ui.AddSlider(1,0,0,100,30,1,#mods)
+    ui.AddSlider(2,0,0,100,30,1,#mods)
   }
    sli_sel= ui.GetObject(sel_menue[1])
    sli_sel:setPrecision(0)
