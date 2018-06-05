@@ -1,3 +1,4 @@
+
 local mod = {}
 mod.name = "Template Mod"
 local gr = love.graphics

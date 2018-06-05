@@ -1,6 +1,6 @@
 
 ui = require("SimpleUI.SimpleUI")
-
+require('cindy.cindy').applyPatch()
 
 local mod_dir = {}
 local mods = {}
@@ -84,6 +84,8 @@ local function draw_panel()
   love.graphics.rectangle("fill",0,0,love.graphics.getWidth(),150)
   love.graphics.setColor(0xff,0xff,0xff,255)
   
+  
+  love.graphics.print(mods[actual_mod].name or "no_name",0, 50)
   love.graphics.line(200,0,200,150)
 end
 
