@@ -1,6 +1,6 @@
 
 ui = require("SimpleUI.SimpleUI")
-require('cindy.cindy').applyPatch()
+--require('cindy.cindy').applyPatch()
 
 local mod_dir = {}
 local mods = {}
@@ -100,5 +100,10 @@ end
 
 
 
+function love.keypressed(key)
+  if key == "escape"then
+    love.event.quit()
+  end
+end
 
 
