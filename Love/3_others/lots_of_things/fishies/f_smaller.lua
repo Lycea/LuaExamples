@@ -1,0 +1,1 @@
+l,f=1,{}for j=1,9 do s,f[j]=(...):gsub(j,0)end::z::a,n=0,l*4 for i=1,l do a=a+i*f[i]end if a>=n then e=l while n>0 do if 0<f[e]and e<=n then n=n-e f[e]=-1+f[e]else e=e-1 end end l=l+1 else print(l)return end goto z
