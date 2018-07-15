@@ -1,86 +1,96 @@
-local r = 5
--- radius to look for neighbours
-local k = 10 --the tries to add a new point
+
+local disc ={} --module init
+
+local default_options =
+{
+  r = 5,-- radius to look for neighbours
+  k = 10, --the tries to add a new point
+  scr_w = 400,  --field width
+  scr_h = 400,  --field height
+  num_points = 9999999999, --set to imense high number when not set
+  runs_per_call = 10,
+  run_till_end  = false
+}
+
+--rows / arrays as variables
 local grid ={} --grid that holds all
-local w = r/math.sqrt(2);  --??
+local ordered ={} --points time after time
 local active ={} --points you search further points from :P
 local cols, rows  -- rolumns and rows ... nothing unusual
 
-local scr_w,scr_h
-
-local ordered ={} --points time after time
+local options_run 
 
 local function dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
-
 local flr = math.floor
 
-lib ,ob =require("disc_lib")
 
-function love.load()
-    lib.new_points({})
-    if false == true then
-  --require("mobdebug").start()
-  scr_w,scr_h= love.graphics.getDimensions()
-  --scr_w,scr_h = 100,100
+function disc.new_points(options)
+    options_run ={}
+    --set the default settings
+    for idx,value in pairs(default_options) do
+        options_run[idx] = value
+    end
+
+    --overwrite default settings if some are set
+    for idx_value in pairs(options) do
+        options_run[idx] = value
+    end
+
+    options_run.w =options_run.r/math.sqrt(2)  --?? size of a cell
+    
+    --reset all tables
+    grid ={}
+    ordered ={}
+    active ={}
+    
   
-  --init rows / columns
-  cols = flr(scr_w/w)
-  rows = flr(scr_h/w)
+    --init rows / columns
+    cols = flr(options_run.scr_w/options_run.w)
+    rows = flr(options_run.scr_h/options_run.w)
   
-  print(cols*rows)
-  --init .. not needed cause lua ?
-  --for i=1,cols*rows do
-  --    grid[i] = false
-  --end
+
   
   --add the starting position
-  local x = love.math.random(1,scr_w-1)--scr_w /2
-  local y = love.math.random(1,scr_h-1)--scr_h/2
-  local i = flr(x/w)
-  local j = flr(y/w)
+  local x = love.math.random(1,options_run.scr_w-1)--scr_w /2
+  local y = love.math.random(1,options_run.scr_h-1)--scr_h/2
+  local i = flr(x/options_run.w)
+  local j = flr(y/options_run.w)
   local pos = {x=x,y=y}
-  print("test"..i+j*cols)
+  --print("test"..i+j*cols)
   grid[i+j*cols] = pos
   pos.count = 0
   table.insert(active,pos)
-  end
+  
   
 end
 
 
-function love.update()
- lib.run()    
-end
-
-
-
-num_points = 1000
-function love.draw()
-    lib.draw()
-    if true == false then
-  local runs = 20
+function disc.run()
   
   --points to add in one go
-  for tota = 0, runs do
+  local total = 0
+  while #active >0 and total <options_run.runs_per_call   do
+      total = total+1
+      
     --is there an element left to check
-    if #active >0  and #ordered< num_points then
+    if #active >0  and #ordered< options_run.num_points then
       local randIdx = math.random(1,#active) --get a point from the list
       local pos     = active[randIdx] --object
       local found   = false   --if a possible location was found
       
       --as long as passes left
-      for n=0,k do
+      for n=0,options_run.k do
         
         local sample = {}
         sample.angle =  math.rad(math.random(0,360))  --angle of the new point
-        sample.m     =  math.random(r,2*r)              --distance of the new point
+        sample.m     =  math.random(options_run.r,2*options_run.r)              --distance of the new point
         
         --now could work ....
         sample.x     = pos.x + math.sin(sample.angle)*sample.m    
         sample.y     = pos.y + math.cos(sample.angle)*sample.m 
         
-        local col = flr(sample.x/w)  --col which the sample is in
-        local row = flr(sample.y/w)  --row which the sample is in
+        local col = flr(sample.x/options_run.w)  --col which the sample is in
+        local row = flr(sample.y/options_run.w)  --row which the sample is in
         
         --is in bounds , then doooo stufff
         if col > -1  and row > -1 and col < cols and row<rows and  grid[col+row*cols] == nil then
@@ -93,7 +103,7 @@ function love.draw()
               local nbs = grid[idx]
               if nbs ~=nil then
                 local d = dist(sample.x,sample.y,nbs.x,nbs.y)
-                if d < r then
+                if d < options_run.r then
                   ok = false
                 end
               end -- neighbour check
@@ -120,6 +130,10 @@ function love.draw()
       
     end--end active check
   end-- end one round
+end
+
+function disc.draw()
+  
   
   for i=1, #ordered do
     if ordered[i] ~= nil then
@@ -141,8 +155,6 @@ function love.draw()
   love.graphics.rectangle("fill",0,0,200,100)
   love.graphics.setColor(0xff,0xff,0xff,255)
   love.graphics.print("FPS_COUNT: "..love.timer.getFPS().."\nSamples: "..#ordered,0,0)
-  
 end
-
-end
-
+--return the module and also the options for interested peeps :P
+return disc,default_options
