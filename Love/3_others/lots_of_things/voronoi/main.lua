@@ -1,6 +1,7 @@
 
+local disc = require("discs")
 
-
+local rnd_num = love.math.random
 function love.load()
   --require("mobdebug").start()
   pts ={}
@@ -14,16 +15,23 @@ function love.load()
   
   canv = gr.newCanvas(w,h)
   
-  for i=0,20 do
-    x= math.random(0,w)
-    y= math.random(0,h)
-    
-    x= love.math.randomNormal(100,w/5)
-    y= love.math.randomNormal(100,h/5)
-    
-    r,g,b = math.random(0,255)/255,math.random(0,255)/255,math.random(0,255)/255
-    pts[#pts+1]={x,y,r,g,b}
+  
+  area_ =(w*h)/points --area a voronoi can have if evenly distributed ...
+  distance  = math.sqrt(area_/math.pi)  --radius from that ... but make it smaller cause testing
+  distance = distance + distance/10
+  
+  disc.new_points({num_points=points,scr_w =w,scr_h=h,r=distance,runs_per_call = 9999})
+  disc.run()
+  print(disc.getActiveCount())
+  pts =disc.getPoints()
+  
+  for i=1,#pts do
+    local c1,c2,c3 =rnd_num(0,255)/255,rnd_num(0,255)/255,rnd_num(0,255)/255
+    pts[i]["r"]=c1
+    pts[i]["g"]=c2
+    pts[i]["b"]=c3 
   end
+  print(#pts)
 
 end
 function love.update()
@@ -34,22 +42,22 @@ end
 pots = {}
 count = 1
 
-function dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
+local function dist(x1,y1, x2,y2) return ((x2-x1)^2+(y2-y1)^2)^0.5 end
 
 function voronoi(x,y,r,g,b,a)
   --calc distance to each point
   local min_d = 10000
   local min_id = 0
-  for i=1,points do
-    if dist(pts[i][1],pts[i][2],x,y)< min_d then
-      min_d = dist(pts[i][1],pts[i][2],x,y)
+  for i=1,#pts do
+    if dist(pts[i]["x"],pts[i]["y"],x,y)< min_d then
+      min_d = dist(pts[i]["x"],pts[i]["y"],x,y)
       min_id = i
     end
   end
   
   --min_d =  (math.tanh(min_d)*2)*0.5
   c = pts[min_id]
-  pots[count]={x,y,c[3],c[4],c[5],1}
+  pots[count]={x,y,pts[min_id].r,pts[min_id].g,pts[min_id].b,1}
   --print(min_d)
   count = count+1
   local uv =  (2*((x-w)+(y-h)))/h
@@ -134,7 +142,7 @@ function love.draw()
   gr.setCanvas(canv)
   
   for i=1 ,#pts do
-    gr.circle("fill",pts[i][1],pts[i][2],2)
+    gr.circle("fill",pts[i]["x"],pts[i]["y"],2)
     --gr.line(0,0,pts[i][1],pts[i][2])
   end
   gr.points( pots)
@@ -143,56 +151,41 @@ function love.draw()
   gr.draw(canv)
   
   gr.setColor(0,0,0,0.5)
-  gr.rectangle("fill",0,0,200,40)
+  gr.rectangle("fill",0,0,200,60)
   gr.setColor(1,1,1,1)
-  gr.print("Num points: "..points.."\nTime: "..proc_time,0,0)
+  gr.print("Num points: "..points.."\nTime: "..proc_time.."\nCalc points: "..#pts,0,0)
 end
 
 
 
 function love.keypressed(key,code,repe)
     if key == "n" then
-      area_ =(w*h)/points --area a voronoi can have if evenly distributed ...
-      distance  = math.sqrt(area_/math.pi)  --radius from that ... but make it smaller cause testing
-      distance = distance/10
-      --[[
-      for i=0,points do
-        x=math.random(0,w)
-        y=math.random(0,h)
-        
-        x= love.math.randomNormal(w/2,w/2)
-        y= love.math.randomNormal(h/2,h/2)
-        r,g,b = math.random(0,255)/255,math.random(0,255)/255,math.random(0,255)/255
-        pts[i]={x,y,r,g,b}
-      end
-      ]]
       pts ={}
       print("------new "..points.."-------")
       c = 0
       local start = love.timer.getTime()
-      repeat
-        c= c+1
-          x=math.random(0,w)
-          y=math.random(0,h)
-          add = true
-          
-          for i,p in ipairs(pts) do
-            --smaller then ok distance in the grid with points
-            if dist(x,y,p[1],p[2])<  distance then
-              add = false
-              return
-            end
-          end
-          if add == true then
-            x= love.math.randomNormal(w/2,w/2)
-            y= love.math.randomNormal(h/2,h/2)
-            r,g,b = math.random(0,255)/255,math.random(0,255)/255,math.random(0,255)/255
-            pts[#pts+1]={x,y,r,g,b}
-          end
-      until #pts == points
-      print(#pts)
+      
+      area_ =(w*h)/points --area a voronoi can have if evenly distributed ...
+      distance  = math.sqrt(area_/math.pi)  --radius from that ... but make it smaller cause testing
+      print(distance)
+      distance = math.sqrt(area_)/2
+      distance = distance + distance/10
+      print(distance)
+     -- distance = distance + distance/10
+  
+      disc.new_points({num_points=points,scr_w =w,scr_h=h,r=distance,runs_per_call = 9999})
+      disc.run()
+      pts =disc.getPoints()
+      
+      for i=1,#pts do
+        pts[i]["r"],pts[i]["g"],pts[i]["b"] = rnd_num(0,255)/255,rnd_num(0,255)/255,rnd_num(0,255)/255
+      end
+      
+      
+      print(disc.getActiveCount())
+      print(#pts)      
       print(love.timer.getTime()-start)
-      print("tries",c)
+
       map_new = true
     end
     if key == "left" then

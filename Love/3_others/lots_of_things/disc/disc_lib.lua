@@ -32,7 +32,7 @@ function disc.new_points(options)
     end
 
     --overwrite default settings if some are set
-    for idx_value in pairs(options) do
+    for idx,value in pairs(options) do
         options_run[idx] = value
     end
 

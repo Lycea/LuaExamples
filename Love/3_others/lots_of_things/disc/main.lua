@@ -17,7 +17,7 @@ local flr = math.floor
 lib ,ob =require("disc_lib")
 
 function love.load()
-    lib.new_points({})
+    lib.new_points({num_points = 100,r = 30})
     if false == true then
   --require("mobdebug").start()
   scr_w,scr_h= love.graphics.getDimensions()
